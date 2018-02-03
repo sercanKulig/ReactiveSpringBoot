@@ -27,3 +27,6 @@ Before running the tests make sure you are serving the app via `ng serve`.
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 #npm install --save @ngrx/store
+#npm install --save @ngrx/effects
+#npm install --save @ngrx/router-store
+#npm install --save @ngrx/store-devtools //has to download chrome extension *redux devtools chrome*

@@ -6,10 +6,10 @@ import {
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
 
 import { Ingredient } from '../../shared/ingredient.model';
-import {Store} from '@ngrx/store';
-import * as ShoppingListActions from '../ngrx/shopping-list.actions';
+import * as ShoppingListActions from '../store/shopping-list.actions';
 import * as fromApp from '../../store/app.reducers';
 
 @Component({

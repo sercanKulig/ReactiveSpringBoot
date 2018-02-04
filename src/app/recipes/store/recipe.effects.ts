@@ -1,28 +1,24 @@
-import {Actions, Effect} from "@ngrx/effects";
-import * as RecipeActions from '../store/reciper.actions';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/do';
+import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
 import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/withLatestFrom';
+import { HttpClient, HttpRequest } from '@angular/common/http';
+import { Store } from '@ngrx/store';
 
-import {Recipe} from "../recipe.model";
-import {HttpClient, HttpRequest} from "@angular/common/http";
-import {Injectable} from "@angular/core";
-import {Store} from "@ngrx/store";
+import * as RecipeActions from '../store/recipe.actions';
+import { Recipe } from '../recipe.model';
 import * as fromRecipe from '../store/recipe.reducers';
 
 @Injectable()
 export class RecipeEffects {
-
   @Effect()
   recipeFetch = this.actions$
-    .ofType(RecipeActions.FETCH_RECIPE)
+    .ofType(RecipeActions.FETCH_RECIPES)
     .switchMap((action: RecipeActions.FetchRecipes) => {
       return this.httpClient.get<Recipe[]>('https://ng-recipe-book-3adbb.firebaseio.com/recipes.json', {
         observe: 'body',
         responseType: 'json'
-      });
+      })
     })
     .map(
       (recipes) => {
@@ -41,7 +37,7 @@ export class RecipeEffects {
 
   @Effect({dispatch: false})
   recipeStore = this.actions$
-    .ofType(RecipeActions.STORE_RECIPE)
+    .ofType(RecipeActions.STORE_RECIPES)
     .withLatestFrom(this.store.select('recipes'))
     .switchMap(([action, state]) => {
       const req = new HttpRequest('PUT', 'https://ng-recipe-book-3adbb.firebaseio.com/recipes.json', state.recipes, {reportProgress: true});
@@ -50,6 +46,5 @@ export class RecipeEffects {
 
   constructor(private actions$: Actions,
               private httpClient: HttpClient,
-              private store: Store<fromRecipe.FeatureState>) {
-  }
+              private store: Store<fromRecipe.FeatureState>) {}
 }

@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
-import {Store} from "@ngrx/store";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
 
-import * as RecipeActions from '../store/reciper.actions';
+import * as RecipeActions from '../store/recipe.actions';
 import * as fromRecipe from '../store/recipe.reducers';
 
 @Component({
@@ -33,10 +33,18 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSubmit() {
+    // const newRecipe = new Recipe(
+    //   this.recipeForm.value['name'],
+    //   this.recipeForm.value['description'],
+    //   this.recipeForm.value['imagePath'],
+    //   this.recipeForm.value['ingredients']);
     if (this.editMode) {
-      this.store.dispatch(new RecipeActions.UpdateRecipes({index: this.id, updateRecipe: this.recipeForm.value}));
+      this.store.dispatch(new RecipeActions.UpdateRecipe({
+        index: this.id,
+        updatedRecipe: this.recipeForm.value
+      }));
     } else {
-      this.store.dispatch(new RecipeActions.AddRecipes(this.recipeForm.value))
+      this.store.dispatch(new RecipeActions.AddRecipe(this.recipeForm.value));
     }
     this.onCancel();
   }
@@ -70,7 +78,7 @@ export class RecipeEditComponent implements OnInit {
     if (this.editMode) {
       this.store.select('recipes')
         .take(1)
-        .subscribe((recipeState: fromRecipe.State) =>{
+        .subscribe((recipeState: fromRecipe.State) => {
           const recipe = recipeState.recipes[this.id];
           recipeName = recipe.name;
           recipeImagePath = recipe.imagePath;

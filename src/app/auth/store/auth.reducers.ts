@@ -1,12 +1,13 @@
 import * as AuthActions from './auth.actions';
+import {User} from "../../shared/userDTO.model";
 
 export interface State {
-  token: string;
+  user: User;
   authenticated: boolean;
 }
 
 const initialState: State = {
-  token: null,
+  user: null,
   authenticated: false
 };
 
@@ -21,13 +22,13 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
     case (AuthActions.LOGOUT):
       return {
         ...state,
-        token: null,
+        user: null,
         authenticated: false
       };
     case (AuthActions.SET_TOKEN):
       return {
         ...state,
-        token: action.payload
+        user: action.payload
       };
     default:
       return state;

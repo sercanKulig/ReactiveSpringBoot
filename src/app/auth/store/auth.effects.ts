@@ -1,24 +1,35 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
-import { Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {Actions, Effect} from '@ngrx/effects';
+import {Router} from '@angular/router';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/mergeMap';
-import { fromPromise } from 'rxjs/observable/fromPromise';
+import {fromPromise} from 'rxjs/observable/fromPromise';
 import * as firebase from 'firebase';
 
 import * as AuthActions from './auth.actions';
+import * as SessionStoreAction from './sessionStore.actions';
+import {HttpClient} from "@angular/common/http";
+import {UserDTO} from "../../shared/userDTO.model";
+import * as fromSessionState from "./sessionStore.reducers";
+import {Store} from "@ngrx/store";
+
+export interface LoginRequestParam {
+  username: string;
+  password: string;
+}
 
 @Injectable()
 export class AuthEffects {
+
   @Effect()
   authSignup = this.actions$
     .ofType(AuthActions.TRY_SIGNUP)
     .map((action: AuthActions.TrySignup) => {
       return action.payload;
     })
-    .switchMap((authData: {username: string, password: string}) => {
+    .switchMap((authData: { username: string, password: string }) => {
       return fromPromise(firebase.auth().createUserWithEmailAndPassword(authData.username, authData.password));
     })
     .switchMap(() => {
@@ -39,26 +50,33 @@ export class AuthEffects {
   @Effect()
   authSignin = this.actions$
     .ofType(AuthActions.TRY_SIGNIN)
-    .map((action: AuthActions.TrySignup) => {
-      return action.payload;
-    })
-    .switchMap((authData: {username: string, password: string}) => {
-      return fromPromise(firebase.auth().signInWithEmailAndPassword(authData.username, authData.password));
-    })
-    .switchMap(() => {
-      return fromPromise(firebase.auth().currentUser.getIdToken());
-    })
-    .mergeMap((token: string) => {
-      this.router.navigate(['/']);
-      return [
+    .switchMap((action: AuthActions.TrySignup) => {
+      let bodyData: LoginRequestParam = {
+        'username': action.payload.username,
+        'password': action.payload.password
+      };
+      return this.httpClient.post('http://localhost:9119/session',
+        JSON.stringify(bodyData),
         {
-          type: AuthActions.SIGNIN
-        },
-        {
-          type: AuthActions.SET_TOKEN,
-          payload: token
-        }
-      ];
+          observe: 'body',
+          responseType: 'json'
+        });
+    }).mergeMap((user: UserDTO) => {
+      if(user.operationStatus == 'SUCCESS') {
+        this.router.navigate(['/']);
+        this.store.dispatch(new SessionStoreAction.StoreUserInfo({currentUserKey: 'currentUser', userInfoString: JSON.stringify(user.item), user: user.item}));
+        return [
+          {
+            type: AuthActions.SIGNIN
+          },
+          {
+            type: AuthActions.SET_TOKEN,
+            payload: user.item
+          }
+        ];
+      } else {
+        //todo error message popup with user.operationMessage
+      }
     });
 
   @Effect({dispatch: false})
@@ -66,8 +84,12 @@ export class AuthEffects {
     .ofType(AuthActions.LOGOUT)
     .do(() => {
       this.router.navigate(['/']);
+      this.store.dispatch(new SessionStoreAction.RemoveUserInfo('currentUser'));
     });
 
-  constructor(private actions$: Actions, private router: Router) {
+  constructor(private actions$: Actions,
+              private router: Router,
+              private httpClient: HttpClient,
+              private store: Store<fromSessionState.State>) {
   }
 }

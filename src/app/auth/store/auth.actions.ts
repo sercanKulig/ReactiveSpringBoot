@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import {User} from "../../shared/userDTO.model";
 
 export const TRY_SIGNUP = 'TRY_SIGNUP';
 export const SIGNUP = 'SIGNUP';
@@ -34,7 +35,7 @@ export class Logout implements Action {
 export class SetToken implements Action {
   readonly type = SET_TOKEN;
 
-  constructor(public payload: string) {}
+  constructor(public payload: User) {}
 }
 
 export type AuthActions = Signup | Signin | Logout | SetToken | TrySignup | TrySignin;

@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect} from '@ngrx/effects';
-import {Router} from '@angular/router';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/mergeMap';
-import {fromPromise} from 'rxjs/observable/fromPromise';
-import * as firebase from 'firebase';
+import {Injectable} from "@angular/core";
+import {Actions, Effect} from "@ngrx/effects";
+import {Router} from "@angular/router";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/do";
+import "rxjs/add/operator/switchMap";
+import "rxjs/add/operator/mergeMap";
+import {fromPromise} from "rxjs/observable/fromPromise";
+import * as firebase from "firebase";
 
-import * as AuthActions from './auth.actions';
-import * as SessionStoreAction from './sessionStore.actions';
+import * as AuthActions from "./auth.actions";
+import * as SessionStoreAction from "./sessionStore.actions";
 import {HttpClient} from "@angular/common/http";
 import {UserDTO} from "../../shared/userDTO.model";
 import * as fromSessionState from "./sessionStore.reducers";
@@ -52,19 +52,23 @@ export class AuthEffects {
     .ofType(AuthActions.TRY_SIGNIN)
     .switchMap((action: AuthActions.TrySignup) => {
       let bodyData: LoginRequestParam = {
-        'username': action.payload.username,
-        'password': action.payload.password
+        "username": action.payload.username,
+        "password": action.payload.password
       };
-      return this.httpClient.post('http://localhost:9119/session',
+      return this.httpClient.post("http://localhost:9119/session",
         JSON.stringify(bodyData),
         {
-          observe: 'body',
-          responseType: 'json'
+          observe: "body",
+          responseType: "json"
         });
     }).mergeMap((user: UserDTO) => {
-      if(user.operationStatus == 'SUCCESS') {
-        this.router.navigate(['/']);
-        this.store.dispatch(new SessionStoreAction.StoreUserInfo({currentUserKey: 'currentUser', userInfoString: JSON.stringify(user.item), user: user.item}));
+      if (user.operationStatus === "SUCCESS") {
+        this.router.navigate(["/"]);
+        this.store.dispatch(new SessionStoreAction.StoreUserInfo({
+          currentUserKey: "currentUser",
+          userInfoString: JSON.stringify(user.item),
+          token: user.item.token
+        }));
         return [
           {
             type: AuthActions.SIGNIN
@@ -83,8 +87,8 @@ export class AuthEffects {
   authLogout = this.actions$
     .ofType(AuthActions.LOGOUT)
     .do(() => {
-      this.router.navigate(['/']);
-      this.store.dispatch(new SessionStoreAction.RemoveUserInfo('currentUser'));
+      this.router.navigate(["/"]);
+      this.store.dispatch(new SessionStoreAction.RemoveUserInfo("currentUser"));
     });
 
   constructor(private actions$: Actions,

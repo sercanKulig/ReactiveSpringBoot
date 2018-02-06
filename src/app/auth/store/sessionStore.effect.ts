@@ -67,6 +67,12 @@ export class SessionStoreEffect {
               payload: JSON.parse(user)
             }
           ];
+        } else {
+          return [
+            {
+              type: AuthActions.LOGOUT
+            }
+          ];
         }
       } catch (e) {
         return null;

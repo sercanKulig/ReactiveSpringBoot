@@ -18,10 +18,12 @@ import { environment } from '../environments/environment';
 import { AuthEffects } from './auth/store/auth.effects';
 import {SessionStoreEffect} from "./auth/store/sessionStore.effect";
 import {ShoppingListEffects} from "./shopping-list/store/shopping-list.effects";
+import { ArticleComponent } from './article/article.component';
+import {ArticleModule} from "./article/article.module";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-universal-app'}),
@@ -29,6 +31,7 @@ import {ShoppingListEffects} from "./shopping-list/store/shopping-list.effects";
     AppRoutingModule,
     SharedModule,
     ShoppingListModule,
+    ArticleModule,
     AuthModule,
     CoreModule,
     StoreModule.forRoot(reducers),

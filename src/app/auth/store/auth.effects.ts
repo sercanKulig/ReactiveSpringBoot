@@ -23,6 +23,8 @@ export interface LoginRequestParam {
 @Injectable()
 export class AuthEffects {
 
+  public static url = "http://localhost:9091/";
+
   @Effect()
   authSignup = this.actions$
     .ofType(AuthActions.TRY_SIGNUP)
@@ -55,14 +57,14 @@ export class AuthEffects {
         "username": action.payload.username,
         "password": action.payload.password
       };
-      return this.httpClient.post("http://localhost:9119/session",
+      return this.httpClient.post(AuthEffects.url + "session",
         JSON.stringify(bodyData),
         {
           observe: "body",
           responseType: "json"
         });
     }).mergeMap((user: UserDTO) => {
-      if (user.operationStatus === "SUCCESS") {
+      if (user.responseMessageStatus === "SUCCESS") {
         this.router.navigate(["/"]);
         this.store.dispatch(new SessionStoreAction.StoreUserInfo({
           currentUserKey: "currentUser",

@@ -8,7 +8,9 @@
       <ul class="nav navbar-nav">
         <li routerLinkActive="active"><a routerLink="/recipes">Recipes</a></li>
         <li routerLinkActive="active"><a routerLink="/shopping-list">Shopping List</a></li>
-        <li routerLinkActive="active"><a routerLink="/article">Article</a></li>
+        <ng-template [ngIf]="(authState | async).authenticated">
+          <li routerLinkActive="active"><a routerLink="/article">Article</a></li>
+        </ng-template>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <ng-template [ngIf]="!(authState | async).authenticated">

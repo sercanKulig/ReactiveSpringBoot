@@ -1,25 +1,25 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { StoreModule } from '@ngrx/store';
+import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
+import {NgModule} from '@angular/core';
+import {StoreModule} from '@ngrx/store';
 
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { SharedModule } from './shared/shared.module';
-import { ShoppingListModule } from './shopping-list/shopping-list.module';
-import { AuthModule } from './auth/auth.module'
-import { CoreModule } from './core/core.module';
-import { reducers } from './store/app.reducers';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
+import {AppComponent} from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {SharedModule} from './shared/shared.module';
+import {ShoppingListModule} from './shopping-list/shopping-list.module';
+import {AuthModule} from './auth/auth.module'
+import {CoreModule} from './core/core.module';
+import {reducers} from './store/app.reducers';
+import {EffectsModule} from '@ngrx/effects';
+import {StoreRouterConnectingModule} from '@ngrx/router-store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
 
-import { AuthEffects } from './auth/store/auth.effects';
-import {SessionStoreEffect} from "./auth/store/sessionStore.effect";
-import {ShoppingListEffects} from "./shopping-list/store/shopping-list.effects";
-import { ArticleComponent } from './article/article.component';
-import {ArticleModule} from "./article/article.module";
+import {AuthEffects} from './auth/store/auth.effects';
+import {SessionStoreEffect} from './auth/store/sessionStore.effect';
+import {ShoppingListEffects} from './shopping-list/store/shopping-list.effects';
+import {ArticleModule} from './article/article.module';
+import {ArticleEffect} from './article/store/article.effect';
 
 @NgModule({
   declarations: [
@@ -35,10 +35,11 @@ import {ArticleModule} from "./article/article.module";
     AuthModule,
     CoreModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects, SessionStoreEffect, ShoppingListEffects]),
+    EffectsModule.forRoot([AuthEffects, SessionStoreEffect, ShoppingListEffects, ArticleEffect]),
     StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

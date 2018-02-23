@@ -1,10 +1,10 @@
-import { Recipe } from '../recipe.model';
-import { Ingredient } from '../../shared/ingredient.model';
+import {Recipe} from '../recipe.model';
+import {Ingredient} from '../../shared/ingredient.model';
 import * as RecipeActions from './recipe.actions';
 import * as fromApp from '../../store/app.reducers';
 
 export interface FeatureState extends fromApp.AppState {
-  recipes: State
+  recipes: State;
 }
 
 export interface State {
@@ -19,8 +19,8 @@ const initialState: State = {
       'A super-tasty Schnitzel - just awesome!',
       'https://upload.wikimedia.org/wikipedia/commons/7/72/Schnitzel.JPG',
       [
-        new Ingredient(0,'Meat', 1),
-        new Ingredient(1,'French Fries', 20)
+        new Ingredient(0, 'Meat', 1),
+        new Ingredient(1, 'French Fries', 20)
       ]),
     new Recipe(
       1,
@@ -28,8 +28,8 @@ const initialState: State = {
       'What else you need to say?',
       'https://upload.wikimedia.org/wikipedia/commons/b/be/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg',
       [
-        new Ingredient(2,'Buns', 2),
-        new Ingredient(3,'Meat', 1)
+        new Ingredient(2, 'Buns', 2),
+        new Ingredient(3, 'Meat', 1)
       ])
   ]
 };

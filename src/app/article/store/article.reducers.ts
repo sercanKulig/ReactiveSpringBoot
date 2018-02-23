@@ -1,14 +1,17 @@
 import * as ArticleAction from './article.action';
 
-import { Article } from '../../shared/article.model';
+import { Article } from '../../shared/articleDTO.model';
+import * as fromApp from '../../store/app.reducers';
+
+export interface FeatureState extends fromApp.AppState {
+  articles: State;
+}
 
 export interface State {
-  article: Article;
   articles: Article[];
 }
 
 const initialState: State = {
-  article: null,
   articles: []
 };
 
@@ -17,7 +20,11 @@ export function articleReducer(state = initialState , action: ArticleAction.Arti
     case ArticleAction.GET_ARTICLES:
       return {
         ...state,
-        articles : null
+      };
+    case ArticleAction.SET_ARTICLES:
+      return {
+        ...state,
+        articles: action.payload
       };
     default:
         return state;

@@ -1,8 +1,8 @@
-import {Injectable} from "@angular/core";
-import {Actions, Effect} from "@ngrx/effects";
-import * as ShoppingListActions from "./shopping-list.actions";
-import {HttpClient} from "@angular/common/http";
-import {Ingredient} from "../../shared/ingredient.model";
+import {Injectable} from '@angular/core';
+import {Actions, Effect} from '@ngrx/effects';
+import * as ShoppingListActions from './shopping-list.actions';
+import {HttpClient} from '@angular/common/http';
+import {Ingredient} from '../../shared/ingredient.model';
 
 
 @Injectable()
@@ -16,8 +16,8 @@ export class ShoppingListEffects {
   getShoppingList = this.actions$
     .ofType(ShoppingListActions.GET_INGREDIENTS)
     .switchMap((action: ShoppingListActions.GetIngredients) => {
-      return this.httpClient.get("http://localhost:9119/api/staffs", {
-        responseType: "json"
+      return this.httpClient.get('http://localhost:9119/api/staffs', {
+        responseType: 'json'
       });
     })
     .mergeMap((ingredients: Ingredient[]) => {

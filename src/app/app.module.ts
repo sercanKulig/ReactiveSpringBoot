@@ -7,7 +7,7 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {SharedModule} from './shared/shared.module';
 import {ShoppingListModule} from './shopping-list/shopping-list.module';
-import {AuthModule} from './auth/auth.module'
+import {AuthModule} from './auth/auth.module';
 import {CoreModule} from './core/core.module';
 import {reducers} from './store/app.reducers';
 import {EffectsModule} from '@ngrx/effects';
@@ -18,8 +18,7 @@ import {environment} from '../environments/environment';
 import {AuthEffects} from './auth/store/auth.effects';
 import {SessionStoreEffect} from './auth/store/sessionStore.effect';
 import {ShoppingListEffects} from './shopping-list/store/shopping-list.effects';
-import {ArticleModule} from './article/article.module';
-import {ArticleEffect} from './article/store/article.effect';
+import {HeaderService} from './shared/header.service';
 
 @NgModule({
   declarations: [
@@ -31,13 +30,15 @@ import {ArticleEffect} from './article/store/article.effect';
     AppRoutingModule,
     SharedModule,
     ShoppingListModule,
-    ArticleModule,
     AuthModule,
     CoreModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects, SessionStoreEffect, ShoppingListEffects, ArticleEffect]),
+    EffectsModule.forRoot([AuthEffects, SessionStoreEffect, ShoppingListEffects]),
     StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : []
+  ],
+  providers: [
+    HeaderService
   ],
   bootstrap: [AppComponent]
 })

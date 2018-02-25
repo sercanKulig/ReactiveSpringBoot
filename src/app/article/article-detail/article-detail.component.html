@@ -1,0 +1,28 @@
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let articleEl of (articleState | async).articles">
+      <tr>
+        <td scope="row">{{ articleEl.articleId }}</td>
+        <td>{{ articleEl.title }}</td>
+        <td>{{ articleEl.category }}</td>
+        <td>{{ articleEl.dateCreation }}</td>
+      </tr>
+
+    </tbody>
+  </table>
+  <ul class="pagination">
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+  </ul>
+</div>

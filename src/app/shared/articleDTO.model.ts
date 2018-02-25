@@ -4,5 +4,5 @@ export class ArticleDTO {
 }
 
 export class Article {
-  constructor(public id: number, public title: string, public catagory: string, public dateCreation: Date) {}
+  constructor(public articleId: number, public title: string, public category: string, public dateCreation: Date) {}
 }

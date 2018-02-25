@@ -8,17 +8,18 @@ import {articleReducer} from './store/article.reducers';
 import {ArticleEffect} from './store/article.effect';
 import {ArticleRoutingModule} from './article-routing.module';
 import {SharedModule} from '../shared/shared.module';
-
+import { ArticleDetailComponent } from './article-detail/article-detail.component';
 @NgModule({
   declarations: [
-    ArticleComponent
+    ArticleComponent,
+    ArticleDetailComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     ArticleRoutingModule,
     SharedModule,
-    StoreModule.forFeature('article', articleReducer),
+    StoreModule.forFeature('articles', articleReducer),
     EffectsModule.forFeature([ArticleEffect])
   ]
 })
